@@ -1,4 +1,3 @@
-# core/db.py
 from typing import Dict, List
 from collections import defaultdict
 from schema.schemas import AccountSecret, Transaction, UserPublic
@@ -14,3 +13,8 @@ DB = InMemoryDB()
 def next_account_no(seq=[100000]):
     seq[0] += 1
     return str(seq[0])
+
+def reset_all():
+    DB.users.clear()
+    DB.secrets.clear()
+    DB.txs.clear()

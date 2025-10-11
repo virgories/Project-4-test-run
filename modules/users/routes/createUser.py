@@ -3,7 +3,6 @@ from schema.schemas import UserCreate, UserPublic, AccountSecret
 from modules.users.routes.auth import require_admin
 from core.db import DB, next_account_no
 
-
 router = APIRouter(prefix="/users", tags=["Users"])
 
 @router.post("", response_model=UserPublic, dependencies=[Depends(require_admin)])

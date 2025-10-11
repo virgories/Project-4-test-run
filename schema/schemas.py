@@ -3,24 +3,26 @@ from typing import Optional, Literal, List
 from datetime import datetime
 
 
-MIN_BALANCE: int = 50_000           
-INTERBANK_FEE: int = 6_500          
-MAX_TRANSFER_PER_TX: int = 5_000_000  
-DAILY_TX_COUNT_LIMIT: int = 10        
+MIN_BALANCE: int = 50_000            
+INTERBANK_FEE: int = 6_500           
+MAX_TRANSFER_PER_TX: int = 5_000_000
+DAILY_TX_COUNT_LIMIT: int = 10       
+
 
 BankCode = constr(strip_whitespace=True, min_length=2, max_length=10)
 AccountNo = constr(strip_whitespace=True, min_length=6, max_length=20)
 
 class UserCreate(BaseModel):
     full_name: constr(min_length=3)
-    bank_name: constr(min_length=2, max_length=10)
+    bank_name: BankCode
 
 class UserUpdate(BaseModel):
+    
     full_name: Optional[constr(min_length=3)] = None
     is_active: Optional[bool] = None
 
     class Config:
-        extra = "forbid"
+        extra = "forbid"  
 
 class UserPublic(BaseModel):
     account_no: AccountNo

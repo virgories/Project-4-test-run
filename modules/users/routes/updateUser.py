@@ -11,13 +11,12 @@ def update_user(account_no: str, payload: UserUpdate):
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    data_update = payload.dict(exclude_unset=True)
+    updates = payload.dict(exclude_unset=True)
 
-    if "bank_name" in data_update:
+    
+    if "bank_name" in updates:
         raise HTTPException(status_code=400, detail="bank_name cannot be modified")
 
-    updated = user.copy(update=data_update)
-    updated.bank_name = user.bank_name
-
+    updated = user.copy(update=updates)
     DB.users[account_no] = updated
     return updated

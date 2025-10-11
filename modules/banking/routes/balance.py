@@ -10,7 +10,7 @@ def get_balance(
     account_no: str,
     x_admin_key: str | None = Header(default=None, alias="X-Admin-Key"),
 ):
-    # blokir admin melihat saldo
+    # larang admin melihat saldo
     if x_admin_key == ADMIN_KEY:
         raise HTTPException(status_code=403, detail="Admins are not allowed to view balances")
 

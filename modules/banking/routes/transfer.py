@@ -16,17 +16,14 @@ def _today_count(account_no: str) -> int:
 
 @router.post("/transfer", response_model=list[StatementResponse])
 def transfer(req: TransferRequest):
-    # validasi akun
     if req.src_account_no not in DB.users or not DB.users[req.src_account_no].is_active:
         raise HTTPException(status_code=404, detail="Source account not found or inactive")
     if req.dst_account_no not in DB.users or not DB.users[req.dst_account_no].is_active:
         raise HTTPException(status_code=404, detail="Destination account not found or inactive")
 
-    # limit jumlah transaksi harian
     if _today_count(req.src_account_no) >= DAILY_TX_COUNT_LIMIT:
         raise HTTPException(status_code=400, detail="Daily transaction count limit reached")
 
-    # limit nominal per transaksi
     if req.amount > MAX_TRANSFER_PER_TX:
         raise HTTPException(status_code=400, detail="Exceeds per-transaction transfer limit")
 
@@ -40,7 +37,7 @@ def transfer(req: TransferRequest):
     if bal - needed < MIN_BALANCE:
         raise HTTPException(status_code=400, detail="Insufficient funds respecting MIN_BALANCE + fees")
 
-    now = datetime.now(UTC)  # menghindari DeprecationWarning
+    now = datetime.now(UTC)
 
     # debit sumber
     DB.secrets[req.src_account_no].balance -= req.amount
@@ -51,7 +48,7 @@ def transfer(req: TransferRequest):
     )
     DB.txs[req.src_account_no].append(tx_out)
 
-    # biaya antarbank
+    
     tx_fee = None
     if fee:
         DB.secrets[req.src_account_no].balance -= fee

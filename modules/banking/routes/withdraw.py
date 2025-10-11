@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException
 from datetime import datetime, UTC
 from uuid import uuid4
-from core.db import DB                              # <—
+
+from core.db import DB
 from schema.schemas import WithdrawRequest, Transaction, StatementResponse, MIN_BALANCE
 
 router = APIRouter(prefix="/banking", tags=["Banking"])

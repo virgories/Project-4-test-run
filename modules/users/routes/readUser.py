@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from modules.users.routes.auth import require_admin
 from schema.schemas import UserPublic
-from core.db import DB 
-
+from core.db import DB
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
