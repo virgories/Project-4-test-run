@@ -1,4 +1,3 @@
-# modules/users/routes/updateUser.py
 from fastapi import APIRouter, Depends, HTTPException
 from modules.users.routes.auth import require_admin
 from schema.schemas import UserUpdate, UserPublic
@@ -14,15 +13,12 @@ def update_user(account_no: str, payload: UserUpdate):
 
     data_update = payload.dict(exclude_unset=True)
 
-    # Lapisan 1 (tetap): kalau somehow lolos schema (misconfig), tetap blokir
+    # jaga-jaga kalau ada field "bank_name" maksa masuk
     if "bank_name" in data_update:
         raise HTTPException(status_code=400, detail="bank_name cannot be modified")
 
-    # Update hanya field yang boleh
     updated = user.copy(update=data_update)
-
-    # Lapisan 2 (invariant): pastikan bank_name tidak berubah
-    updated.bank_name = user.bank_name
+    updated.bank_name = user.bank_name  # pastikan tetap sama
 
     DB.users[account_no] = updated
     return updated

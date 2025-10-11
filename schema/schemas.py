@@ -14,7 +14,7 @@ AccountNo = constr(strip_whitespace=True, min_length=6, max_length=20)
 
 class UserCreate(BaseModel):
     full_name: constr(min_length=3)
-    bank_name: BankCode
+    bank_name: constr(min_length=2, max_length=10)
 
 class UserUpdate(BaseModel):
     full_name: Optional[constr(min_length=3)] = None
