@@ -13,12 +13,11 @@ def update_user(account_no: str, payload: UserUpdate):
 
     data_update = payload.dict(exclude_unset=True)
 
-    # jaga-jaga kalau ada field "bank_name" maksa masuk
     if "bank_name" in data_update:
         raise HTTPException(status_code=400, detail="bank_name cannot be modified")
 
     updated = user.copy(update=data_update)
-    updated.bank_name = user.bank_name  # pastikan tetap sama
+    updated.bank_name = user.bank_name
 
     DB.users[account_no] = updated
     return updated

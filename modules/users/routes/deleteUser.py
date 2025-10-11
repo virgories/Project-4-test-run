@@ -9,7 +9,7 @@ router = APIRouter(prefix="/users", tags=["Users"])
 def delete_user(account_no: str):
     if account_no not in DB.users:
         raise HTTPException(status_code=404, detail="User not found")
-    # soft delete: set is_active False & keep data, sesuai kebutuhan audit
+   
     user = DB.users[account_no]
     user.is_active = False
     DB.users[account_no] = user

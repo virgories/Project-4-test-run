@@ -1,6 +1,6 @@
 from fastapi import Header, HTTPException, status
 
-ADMIN_KEY = "super-secret-admin"  # ganti saat demo kalau mau
+ADMIN_KEY = "super-secret-admin"
 
 def require_admin(x_admin_key: str | None = Header(default=None, alias="X-Admin-Key")):
     if x_admin_key != ADMIN_KEY:

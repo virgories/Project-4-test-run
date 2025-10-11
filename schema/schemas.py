@@ -2,13 +2,12 @@ from pydantic import BaseModel, Field, constr
 from typing import Optional, Literal, List
 from datetime import datetime
 
-# ====== Konstanta aturan sistem ======
-MIN_BALANCE: int = 50_000           # saldo minimum yang wajib tersisa (IDR)
-INTERBANK_FEE: int = 6_500          # biaya admin untuk transfer antar bank
-MAX_TRANSFER_PER_TX: int = 5_000_000  # batas maksimum nominal per transaksi
-DAILY_TX_COUNT_LIMIT: int = 10        # jumlah transaksi harian per akun
 
-# ====== Model User / Account ======
+MIN_BALANCE: int = 50_000           
+INTERBANK_FEE: int = 6_500          
+MAX_TRANSFER_PER_TX: int = 5_000_000  
+DAILY_TX_COUNT_LIMIT: int = 10        
+
 BankCode = constr(strip_whitespace=True, min_length=2, max_length=10)
 AccountNo = constr(strip_whitespace=True, min_length=6, max_length=20)
 
@@ -21,7 +20,7 @@ class UserUpdate(BaseModel):
     is_active: Optional[bool] = None
 
     class Config:
-        extra = "forbid"   # <-- kirim bank_name akan 422 Unprocessable Entity
+        extra = "forbid"
 
 class UserPublic(BaseModel):
     account_no: AccountNo
@@ -30,10 +29,9 @@ class UserPublic(BaseModel):
     is_active: bool
 
 class AccountSecret(BaseModel):
-    # Disimpan di server, tidak terekspos ke admin read/list
     balance: int = 0
 
-# ====== Transaksi ======
+
 TxType = Literal["DEPOSIT", "WITHDRAW", "TRANSFER_OUT", "TRANSFER_IN", "FEE"]
 
 class Transaction(BaseModel):

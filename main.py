@@ -4,7 +4,7 @@ from modules.banking.routes import deposit, withdraw, transfer, balance, stateme
 
 app = FastAPI(title="Digital Banking API (UTS)", version="1.0.0")
 
-# include routers
+
 app.include_router(createUser.router)
 app.include_router(readUser.router)
 app.include_router(updateUser.router)

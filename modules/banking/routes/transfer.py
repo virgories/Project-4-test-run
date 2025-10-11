@@ -51,7 +51,7 @@ def transfer(req: TransferRequest):
     )
     DB.txs[req.src_account_no].append(tx_out)
 
-    # biaya antarbank (jika perlu)
+    # biaya antarbank
     tx_fee = None
     if fee:
         DB.secrets[req.src_account_no].balance -= fee
@@ -71,7 +71,6 @@ def transfer(req: TransferRequest):
     )
     DB.txs[req.dst_account_no].append(tx_in)
 
-    # SELALU kembalikan list[StatementResponse]
     src_txs = [tx_out] + ([tx_fee] if tx_fee else [])
     return [
         StatementResponse(account_no=req.src_account_no, transactions=src_txs),
