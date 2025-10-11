@@ -13,9 +13,9 @@ def update_user(account_no: str, payload: UserUpdate):
 
     data_update = payload.dict(exclude_unset=True)
 
-    # >>>> larang ubah bank_name
+    # 🚫 Kunci perubahan nama bank
     if "bank_name" in data_update:
-        raise HTTPException(status_code=400, detail="bank_name is immutable")
+        raise HTTPException(status_code=400, detail="bank_name cannot be modified")
 
     updated = user.copy(update=data_update)
     DB.users[account_no] = updated
