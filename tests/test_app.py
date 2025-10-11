@@ -59,3 +59,17 @@ def test_limits():
     # limit saldo minimum (force gagal)
     r = client.post("/banking/withdraw", json={"account_no": a, "amount": 1_000_000_000})
     assert r.status_code == 400
+
+def test_patch_cannot_change_bank_name():
+    # create user
+    r = client.post("/users", headers=admin_hdr(), json={"full_name":"X","bank_name":"BANKA"})
+    a = r.json()["account_no"]
+
+    # coba ganti bank_name -> harus 422 (forbid extra) ATAU 400 (guard)
+    r = client.patch(f"/users/{a}", headers=admin_hdr(), json={"bank_name":"BANKB"})
+    assert r.status_code in (400, 422)
+
+    # pastikan bank_name tetap BANKA
+    r = client.get(f"/users/{a}", headers=admin_hdr())
+    assert r.json()["bank_name"] == "BANKA"
+

@@ -18,8 +18,10 @@ class UserCreate(BaseModel):
 
 class UserUpdate(BaseModel):
     full_name: Optional[constr(min_length=3)] = None
-    bank_name: Optional[BankCode] = None
     is_active: Optional[bool] = None
+
+    class Config:
+        extra = "forbid"   # <-- kirim bank_name akan 422 Unprocessable Entity
 
 class UserPublic(BaseModel):
     account_no: AccountNo
